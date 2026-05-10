@@ -1,89 +1,81 @@
+<?php
+require_once 'config/database.php';
+
+$id          = isset($_GET['id']) ? intval($_GET['id']) : 0;
+$reservation = null;
+
+if ($id > 0) {
+    $stmt = $pdo->prepare("
+        SELECT r.*, s.nom AS nom_salle
+        FROM réservation r
+        JOIN salle s ON r.id_salle = s.id_salle
+        WHERE r.id = ?
+    ");
+    $stmt->execute([$id]);
+    $reservation = $stmt->fetch(PDO::FETCH_ASSOC);
+}
+?>
 <!DOCTYPE html>
 <html lang="fr">
 <head>
-<link rel="stylesheet" href="css/confirmationstyle.css">
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Réservation Confirmée</title>
-  <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet" />
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Réservation confirmée — CHOP TA SALLE</title>
+    <link rel="stylesheet" href="css/indexstyle.css">
+    
+</head>
+<body>
 
+<header class="header">
+    <img src="./image/logo.jpg" alt="logo">
+    <nav>
+        <ul class="border">
+            <li><a href="index.php">Accueil</a></li>
+            <li><a href="salles.php">Nos salles</a></li>
+            <li><a href="reservation.php">Réserver</a></li>
+        </ul>
+    </nav>
+</header>
 
-<div class="card">
+<div class="confirm-wrap">
+    <div class="confirm-card">
+        <div class="confirm-icon">✅</div>
+        <h1>Réservation confirmée !</h1>
 
-  <!-- Check icon -->
-  <div class="check-wrap">
-    <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-      <polyline points="20 6 9 17 4 12"/>
-    </svg>
-  </div>
+        <?php if ($reservation) : ?>
+        <p>Merci <strong><?= htmlspecialchars($reservation['prénom']) ?></strong>, votre réservation a bien été enregistrée.</p>
 
-  <p class="tag">Réservation confirmée</p>
-  <h1>Votre salle est réservée !</h1>
-  
+        <div class="confirm-recap">
+            <div class="confirm-recap-row">
+                <span>🏢</span>
+                <div><label>Salle</label><strong><?= htmlspecialchars($reservation['nom_salle']) ?></strong></div>
+            </div>
+            <div class="confirm-recap-row">
+                <span>📅</span>
+                <div><label>Date</label><strong><?= htmlspecialchars($reservation['date']) ?></strong></div>
+            </div>
+            <div class="confirm-recap-row">
+                <span>🕐</span>
+                <div><label>Créneau</label><strong><?= htmlspecialchars($reservation['créneau']) ?></strong></div>
+            </div>
+            <div class="confirm-recap-row">
+                <span>👥</span>
+                <div><label>Participants</label><strong><?= $reservation['Nb_personnes'] ?> personnes</strong></div>
+            </div>
+            <div class="confirm-recap-row">
+                <span>📧</span>
+                <div><label>Email</label><strong><?= htmlspecialchars($reservation['email']) ?></strong></div>
+            </div>
+        </div>
+        <?php else : ?>
+        <p>Votre réservation a bien été enregistrée.</p>
+        <?php endif; ?>
 
-  <hr class="divider" />
-
-  <!-- Details -->
-  <div class="details">
-
-    <div class="detail-row">
-      <div class="detail-icon">
-        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-          <rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 9h18M9 21V9"/>
-        </svg>
-      </div>
-      <div class="detail-text">
-        <label>Salle</label>
-        <strong>Salle Confluence — 3ème étage</strong>
-      </div>
+        <div class="confirm-btns">
+            <a href="index.php"><button class="details">🏠 Accueil</button></a>
+            <a href="salles.php"><button class="ajouter">Voir les salles</button></a>
+        </div>
     </div>
-
-    <div class="detail-row">
-      <div class="detail-icon">
-        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-          <rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/>
-        </svg>
-      </div>
-      <div class="detail-text">
-        <label>Date</label>
-        <strong>Lundi 13 mai 2026</strong>
-      </div>
-    </div>
-
-    <div class="detail-row">
-      <div class="detail-icon">
-        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-          <circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/>
-        </svg>
-      </div>
-      <div class="detail-text">
-        <label>Horaires</label>
-        <strong>09h00 – 11h30 <span style="color:var(--muted);font-weight:400">(2h30)</span></strong>
-      </div>
-    </div>
-
-    <div class="detail-row">
-      <div class="detail-icon">
-        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-          <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/>
-        </svg>
-      </div>
-      <div class="detail-text">
-        <label>Participants</label>
-        <strong>8 personnes</strong>
-      </div>
-    </div>
-
-  </div>
-
-
-  <!-- Actions -->
-  <div class="actions">
-  
-    <button class="btn btn-outline" onclick="window.location.href='index.html'">Retour à l'accueil</button>
-  </div>
-
-
 </div>
 
 </body>

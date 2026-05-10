@@ -1,317 +1,64 @@
-
-:root {
-  --bg: #0f0f10;
-  --card: #171718;
-  --gold: #d4af37;
-  --gold-soft: #b8922f;
-  --text: #f5f2ea;
-  --muted: #a9a18f;
-  --border: rgba(212,175,55,.25);
-}
-=======
-<<<<<<< HEAD
-*, *::before, *::after {
-      box-sizing: border-box;
-      margin: 0;
-      padding: 0;
-    }
-=======
-
-    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
->>>>>>> 59c8e814d7606dcf3b10f9a7071c5a3c5dffcc0e
->>>>>>> 63e79ba9957f480fdcc38e607b66dcf772e1a1c4
-
-/* RESET */
-*, *::before, *::after {
-  box-sizing: border-box;
-  margin: 0;
-  padding: 0;
-}
-
-/* BODY */
-body {
-  font-family: 'DM Sans', sans-serif;
-
-  background:
-    radial-gradient(circle at top left, rgba(212,175,55,.12), transparent 35%),
-    radial-gradient(circle at bottom right, rgba(212,175,55,.08), transparent 40%),
-    var(--bg);
-
-  color: var(--text);
-
-  min-height: 100vh;
-
-  display: flex;
-  align-items: center;
-  justify-content: center;
-
-  padding: 2rem;
-  overflow: hidden;
-  position: relative;
-}
-
-/* CONTOUR */
-body::before {
-  content: '';
-  position: fixed;
-  inset: 20px;
-  border: 1px solid rgba(212,175,55,.18);
-  pointer-events: none;
-}
-
-/* CARD */
-.card {
-  background: linear-gradient(145deg, #1a1a1c, #111112);
-
-  border: 1px solid var(--border);
-
-  width: 100%;
-  max-width: 560px;
-
-  padding: 3rem 3.5rem;
-
-  border-radius: 10px;
-
-  box-shadow:
-    0 0 0 1px rgba(212,175,55,.05),
-    0 15px 40px rgba(0,0,0,.6);
-
-  position: relative;
-  overflow: hidden;
-
-  animation: rise .6s ease both;
-}
-
-.card::before {
-  content: '';
-  position: absolute;
-
-  top: 0;
-  left: 40px;
-  right: 40px;
-
-  height: 3px;
-
-  background: linear-gradient(
-    90deg,
-    transparent,
-    var(--gold),
-    transparent
-  );
-}
-
-/* ANIMATION */
-@keyframes rise {
-  from {
-    opacity: 0;
-    transform: translateY(20px);
-  }
-
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
-
-/* CHECK ICON */
-.check-wrap {
-  width: 72px;
-  height: 72px;
-
-  border-radius: 50%;
-
-  background: linear-gradient(
-    145deg,
-    var(--gold),
-    var(--gold-soft)
-  );
-
-  display: flex;
-  align-items: center;
-  justify-content: center;
-
-  margin: 0 auto 1.8rem;
-
-  box-shadow:
-    0 8px 24px rgba(212,175,55,.35);
-
-  animation: pop .5s .3s both;
-}
-
-.check-wrap svg {
-  stroke: #111;
-}
-
-@keyframes pop {
-  from {
-    opacity: 0;
-    transform: scale(.6);
-  }
-
-<<<<<<< HEAD
-  to {
-    opacity: 1;
-    transform: scale(1);
-  }
-}
-
-/* TITRES */
-.tag {
-  text-align: center;
-
-  text-transform: uppercase;
-  letter-spacing: .18em;
-
-  font-size: .72rem;
-
-  color: var(--gold);
-
-  margin-bottom: .6rem;
-}
-
-h1 {
-  font-family: 'DM Serif Display', serif;
-
-  text-align: center;
-
-  font-size: 2.2rem;
-
-  margin-bottom: 2rem;
-
-  color: #fff;
-}
-
-/* DIVIDER */
-.divider {
-  border: none;
-  border-top: 1px solid rgba(212,175,55,.15);
-
-  margin-bottom: 2rem;
-}
-
-/* DETAILS */
-.details {
-  display: grid;
-  gap: 1.2rem;
-
-  margin-bottom: 2rem;
-}
-
-.detail-row {
-  display: flex;
-  align-items: flex-start;
-  gap: 1rem;
-}
-
-.detail-icon {
-  width: 42px;
-  height: 42px;
-
-  flex-shrink: 0;
-
-  border-radius: 8px;
-
-  background: rgba(212,175,55,.08);
-
-  border: 1px solid rgba(212,175,55,.12);
-
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-.detail-icon svg {
-  stroke: var(--gold);
-}
-
-.detail-text label {
-  display: block;
-
-  font-size: .72rem;
-
-  letter-spacing: .12em;
-  text-transform: uppercase;
-
-  color: var(--muted);
-
-  margin-bottom: .2rem;
-}
-
-.detail-text strong {
-  font-size: 1rem;
-  font-weight: 500;
-
-  color: var(--text);
-}
-
-/* BOUTONS */
-.actions {
-  display: flex;
-  gap: .8rem;
-
-  margin-top: 2rem;
-}
-
-.btn {
-  flex: 1;
-
-  padding: .95rem 1rem;
-
-  border-radius: 6px;
-
-  font-family: 'DM Sans', sans-serif;
-
-  font-size: .9rem;
-  font-weight: 500;
-
-  cursor: pointer;
-
-  transition: .2s ease;
-}
-
-.btn-outline {
-  background: transparent;
-
-  border: 1px solid rgba(212,175,55,.35);
-
-  color: var(--gold);
-}
-
-.btn-outline:hover {
-  background: rgba(212,175,55,.08);
-
-  transform: translateY(-1px);
-}
-
-/* RESPONSIVE */
-@media (max-width: 480px) {
-
-  .card {
-    padding: 2.2rem 1.5rem;
-  }
-
-  .actions {
-    flex-direction: column;
-  }
-
-  h1 {
-    font-size: 1.8rem;
-  }
-}
-    @media (max-width: 480px) 
-
-       
-        padding: 2.2rem 1.5rem;
-      
-
-      .actions {
-        flex-direction: column;
-      }
-
-      h1 {
-        font-size: 1.8rem;
-      }
- 
-      .card { padding: 2.25rem 1.75rem; }
-      .actions { flex-direction: column; }
-  
+        .confirm-wrap {
+            max-width: 560px;
+            margin: 60px auto;
+            padding: 0 20px;
+            text-align: center;
+        }
+        .confirm-card {
+            background: #fff;
+            border-radius: 14px;
+            box-shadow: 0 2px 20px rgba(0,0,0,0.09);
+            padding: 48px 36px;
+        }
+        .confirm-icon {
+            width: 72px; height: 72px;
+            background: #e8f8ef;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2.2rem;
+            margin: 0 auto 20px;
+        }
+        .confirm-card h1 {
+            font-size: 1.6rem;
+            color: #1a1a2e;
+            margin-bottom: 10px;
+        }
+        .confirm-card > p {
+            color: gray;
+            font-size: 0.95rem;
+            margin-bottom: 28px;
+        }
+        .confirm-recap {
+            background: #f5f6fa;
+            border-radius: 10px;
+            padding: 20px;
+            text-align: left;
+            margin-bottom: 28px;
+        }
+        .confirm-recap-row {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 10px 0;
+            border-bottom: 1px solid #eee;
+            font-size: 0.9rem;
+        }
+        .confirm-recap-row:last-child { border-bottom: none; }
+        .confirm-recap-row span { font-size: 1.1rem; }
+        .confirm-recap-row div label {
+            display: block;
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 0.08em;
+            color: gray;
+            margin-bottom: 2px;
+        }
+        .confirm-recap-row div strong { color: #1a1a2e; }
+        .confirm-btns {
+            display: flex;
+            gap: 12px;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
