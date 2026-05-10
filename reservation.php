@@ -12,7 +12,6 @@
                 <ul class="border">
                     <li><a href="acceuille.html">Acceuille</a></li>
                     <li><a href="reservation.php">Produit</a></li>
-                    <li><a href="contact.html">contact</a></li>
                     <li><a href="confirmation.php">reservation</a></li>
                 <ul>
             </nav>
