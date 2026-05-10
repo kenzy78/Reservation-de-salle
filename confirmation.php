@@ -76,22 +76,13 @@
 
   </div>
 
-  <!-- Reference number -->
-  <div class="ref-box">
-    <span>N° de réservation</span>
-    <strong>RSV-2026-04817</strong>
-  </div>
 
   <!-- Actions -->
   <div class="actions">
-    <button class="btn btn-primary" onclick="window.print()">Télécharger le PDF</button>
+  
     <button class="btn btn-outline" onclick="window.location.href='index.html'">Retour à l'accueil</button>
   </div>
 
-  <p class="footer-note">
-    Besoin de modifier ou annuler votre réservation ?<br>
-    Contactez-nous à <a href="mailto:reservations@exemple.fr">reservations@exemple.fr</a> ou appelez le <a href="tel:+33123456789">01 23 45 67 89</a>.
-  </p>
 
 </div>
 

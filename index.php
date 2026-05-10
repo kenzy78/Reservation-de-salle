@@ -7,7 +7,7 @@
     <body>
         <header class="header">
             <div class=container>
-                <span class= "tittle">CHOP TA SSALLE.COM<span>
+                <span class= "tittle">CHOP TA SALLE.COM<span>
                 <span class= "desc"> site de réservation de salle</span>
                 <
             </div>
