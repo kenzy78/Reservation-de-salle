@@ -315,28 +315,6 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
   </form>
 </main>
 
-<script>
-  // Sync left panel chips with radio cards
-  function selectRoom(id, chip) {
-    document.querySelectorAll('.room-chip').forEach(c => c.classList.remove('active'));
-    chip.classList.add('active');
-    const radio = document.querySelector(`.salle-card input[value="${id}"]`);
-    if (radio) radio.click();
-  }
-
-  // Sync radio cards → left panel chips
-  document.querySelectorAll('.salle-card input[type="radio"]').forEach(radio => {
-    radio.addEventListener('change', () => {
-      document.querySelectorAll('.room-chip').forEach((c, i) => {
-        c.classList.toggle('active', i === parseInt(radio.value) - 1);
-      });
-    });
-  });
-
-  // Set min date to today
-  const today = new Date().toISOString().split('T')[0];
-  document.getElementById('date').setAttribute('min', today);
-</script>
 
 </body>
 </html>
