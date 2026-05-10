@@ -6,6 +6,7 @@
 </head>
     <body>
         <header class="header">
+<<<<<<< HEAD
                 <img src="./image/logo.jpg" alt="logo d'entreprise"  
             <nav>
                 <ul class="border">
@@ -15,6 +16,13 @@
                     <li><a href="confirmation.php">reservation</a></li>
                 <ul>
             </nav>
+=======
+            <div class=container>
+                <span class= "tittle">CHOP TA SALLE.COM<span>
+                <span class= "desc"> site de réservation de salle</span>
+                <
+            </div>
+>>>>>>> ab32f64ef3c6cb283dea6c6755780471adc177e9
         </header>
 
         <main>
