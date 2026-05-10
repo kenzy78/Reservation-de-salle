@@ -65,6 +65,15 @@
         </div>
         <span class="room-cap">30 pers.</span>
       </div>
+      <div class="room-chip" onclick="selectRoom(5, this)">
+        <div class="room-chip-left">
+          <span class="room-number">05</span>
+          <div>
+            <div class="room-name">Salle Bercy</div>
+            <div class="room-floor">1er étage</div>
+          </div>
+        </div>
+        <span class="room-cap">15 pers.</span>
     </div>
 
     <div class="left-bottom">
@@ -72,7 +81,6 @@
         <div class="step-dot active"></div>
         <div class="step-dot"></div>
         <div class="step-dot"></div>
-        <span class="step-label">Étape 1 sur 3</span>
       </div>
     </div>
   </div>
@@ -157,7 +165,7 @@
 
       <div class="salle-grid" style="margin-bottom:1rem">
 
-        <label class="salle-card selected">
+        <label class="salle-card">
           <input type="radio" name="id_salle" value="1" checked />
           <div class="salle-card-num">01</div>
           <div class="salle-card-name">Confluence</div>
