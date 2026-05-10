@@ -1,0 +1,260 @@
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --cream: #F5F0E8;
+      --ink: #1C1B18;
+      --sand: #D6C9A8;
+      --accent: #3B6E5F;
+      --accent2: #8B5E3C;
+      --muted: #7A756A;
+    }
+
+    body {
+      font-family: 'DM Sans', sans-serif;
+      background: var(--cream);
+      color: var(--ink);
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 2rem;
+      position: relative;
+      overflow: hidden;
+    }
+
+    /* Background texture */
+    body::before {
+      content: '';
+      position: fixed;
+      inset: 0;
+      background-image:
+        radial-gradient(ellipse 80% 60% at 10% 10%, rgba(59,110,95,.08) 0%, transparent 60%),
+        radial-gradient(ellipse 60% 70% at 90% 90%, rgba(139,94,60,.07) 0%, transparent 60%);
+      pointer-events: none;
+    }
+
+    /* Decorative corner lines */
+    body::after {
+      content: '';
+      position: fixed;
+      top: 1.5rem; left: 1.5rem; right: 1.5rem; bottom: 1.5rem;
+      border: 1px solid var(--sand);
+      border-radius: 4px;
+      pointer-events: none;
+      opacity: .6;
+    }
+
+    /* ── Card ── */
+    .card {
+      background: #fff;
+      border-radius: 2px;
+      width: 100%;
+      max-width: 560px;
+      padding: 3rem 3.5rem;
+      box-shadow: 0 2px 8px rgba(28,27,24,.06), 0 20px 60px rgba(28,27,24,.08);
+      position: relative;
+      animation: rise .6s cubic-bezier(.22,1,.36,1) both;
+    }
+
+    @keyframes rise {
+      from { opacity:0; transform: translateY(28px); }
+      to { opacity:1; transform: translateY(0); }
+    }
+
+    /* Top accent bar */
+    .card::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 3rem; right: 3rem;
+      height: 3px;
+      background: linear-gradient(90deg, var(--accent), var(--accent2));
+      border-radius: 0 0 3px 3px;
+    }
+
+    /* ── Check icon ── */
+    .check-wrap {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 64px; height: 64px;
+      background: var(--accent);
+      border-radius: 50%;
+      margin: 0 auto 1.75rem;
+      animation: pop .5s .4s cubic-bezier(.34,1.56,.64,1) both;
+    }
+
+    @keyframes pop {
+      from { opacity:0; transform: scale(.5); }
+      to { opacity:1; transform: scale(1); }
+    }
+
+    .check-wrap svg { stroke: #fff; }
+
+    /* ── Headings ── */
+    .tag {
+      font-size: .7rem;
+      font-weight: 500;
+      letter-spacing: .15em;
+      text-transform: uppercase;
+      color: var(--accent);
+      text-align: center;
+      margin-bottom: .5rem;
+      animation: fade .5s .5s both;
+    }
+
+    h1 {
+      font-family: 'DM Serif Display', serif;
+      font-size: 2rem;
+      line-height: 1.15;
+      text-align: center;
+      margin-bottom: .5rem;
+      animation: fade .5s .55s both;
+    }
+
+    .subtitle {
+      font-size: .9rem;
+      color: var(--muted);
+      text-align: center;
+      margin-bottom: 2.25rem;
+      animation: fade .5s .6s both;
+    }
+
+    @keyframes fade {
+      from { opacity:0; transform: translateY(8px); }
+      to { opacity:1; transform: translateY(0); }
+    }
+
+    /* ── Divider ── */
+    .divider {
+      border: none;
+      border-top: 1px solid var(--sand);
+      margin-bottom: 2rem;
+      animation: fade .5s .65s both;
+    }
+
+    /* ── Reservation details ── */
+    .details {
+      display: grid;
+      gap: 1rem;
+      margin-bottom: 2rem;
+      animation: fade .5s .7s both;
+    }
+
+    .detail-row {
+      display: flex;
+      align-items: flex-start;
+      gap: 1rem;
+    }
+
+    .detail-icon {
+      flex-shrink: 0;
+      width: 36px; height: 36px;
+      background: var(--cream);
+      border-radius: 6px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .detail-icon svg { stroke: var(--accent2); }
+
+    .detail-text label {
+      display: block;
+      font-size: .7rem;
+      letter-spacing: .1em;
+      text-transform: uppercase;
+      color: var(--muted);
+      margin-bottom: .15rem;
+    }
+
+    .detail-text strong {
+      font-weight: 500;
+      font-size: .95rem;
+    }
+
+    /* ── Ref number ── */
+    .ref-box {
+      background: var(--cream);
+      border: 1px dashed var(--sand);
+      border-radius: 4px;
+      padding: .85rem 1.25rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 2rem;
+      animation: fade .5s .75s both;
+    }
+
+    .ref-box span {
+      font-size: .7rem;
+      letter-spacing: .1em;
+      text-transform: uppercase;
+      color: var(--muted);
+    }
+
+    .ref-box strong {
+      font-family: 'DM Serif Display', serif;
+      font-size: 1.1rem;
+      letter-spacing: .05em;
+      color: var(--accent);
+    }
+
+    /* ── Buttons ── */
+    .actions {
+      display: flex;
+      gap: .75rem;
+      animation: fade .5s .8s both;
+    }
+
+    .btn {
+      flex: 1;
+      padding: .85rem 1rem;
+      border-radius: 3px;
+      font-family: 'DM Sans', sans-serif;
+      font-size: .85rem;
+      font-weight: 500;
+      cursor: pointer;
+      transition: transform .15s, box-shadow .15s, background .15s;
+      border: none;
+      letter-spacing: .03em;
+    }
+
+    .btn:hover { transform: translateY(-1px); }
+    .btn:active { transform: translateY(0); }
+
+    .btn-primary {
+      background: var(--accent);
+      color: #fff;
+      box-shadow: 0 4px 12px rgba(59,110,95,.25);
+    }
+    .btn-primary:hover { background: #2f5a4d; box-shadow: 0 6px 16px rgba(59,110,95,.3); }
+
+    .btn-outline {
+      background: transparent;
+      color: var(--ink);
+      border: 1px solid var(--sand);
+    }
+    .btn-outline:hover { background: var(--cream); }
+
+    /* ── Footer note ── */
+    .footer-note {
+      margin-top: 1.75rem;
+      font-size: .78rem;
+      color: var(--muted);
+      text-align: center;
+      line-height: 1.6;
+      animation: fade .5s .85s both;
+    }
+
+    .footer-note a {
+      color: var(--accent);
+      text-decoration: none;
+      font-weight: 500;
+    }
+    .footer-note a:hover { text-decoration: underline; }
+
+    @media (max-width: 480px) {
+      .card { padding: 2.25rem 1.75rem; }
+      .actions { flex-direction: column; }
+    }
