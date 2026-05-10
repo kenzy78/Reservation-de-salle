@@ -9,10 +9,11 @@
                 <img src="./image/logo.jpg" alt="logo d'entreprise"  
             <nav>
                 <ul class="border">
-                    <li><a href="acceuille.html">Acceuille</a></li>
-                    <li><a href="reservation.php">Produit</a></li>
-                    <li><a href="confirmation.php">reservation</a></li>
-                <ul>
+                    <li><a href="acceuille.html">Acceuil</a></li>
+                    <li><a href="salles.php">Nos salles</a></li>
+                    <li><a href="reservation.php">Réserver</a></li>
+                    <li><a href="confirmation.php">Confirmation</a></li>
+                </ul>
             </nav>
         </header>
 
