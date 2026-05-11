@@ -5,12 +5,12 @@ $id          = isset($_GET['id']) ? intval($_GET['id']) : 0;
 $reservation = null;
 
 if ($id > 0) {
-    $stmt = $pdo->prepare("
-        SELECT r.*, s.nom AS nom_salle
-        FROM réservation r
-        JOIN salle s ON r.id_salle = s.id_salle
-        WHERE r.id = ?
-    ");
+$stmt = $pdo->prepare("
+    SELECT r.*, s.nom AS nom_salle
+    FROM réservation r
+    JOIN salle s ON r.id_salle = s.id_salle
+    WHERE r.id_réservation = ?
+");
     $stmt->execute([$id]);
     $reservation = $stmt->fetch(PDO::FETCH_ASSOC);
 }
@@ -21,18 +21,20 @@ if ($id > 0) {
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Réservation confirmée — CHOP TA SALLE</title>
+    <link rel="stylesheet" href="css/confirmationstyle.css">
     <link rel="stylesheet" href="css/indexstyle.css">
     
 </head>
 <body>
 
 <header class="header">
-    <img src="./image/logo.jpg" alt="logo">
+    <img src="./image/logo.jpg" alt="logo d'entreprise">
+    <h2 class="header-titre">WorkSpace Connect</h2>
     <nav>
-        <ul class="border">
-            <li><a href="index.php">Accueil</a></li>
-            <li><a href="salles.php">Nos salles</a></li>
-            <li><a href="reservation.php">Réserver</a></li>
+        <ul class="nav-list">
+            <li><a href="index.php" class="nav-btn">Accueil</a></li>
+            <li><a href="salles.php" class="nav-btn">Nos salles</a></li>
+            <li><a href="reservation.php" class="nav-btn">Réserver</a></li>
         </ul>
     </nav>
 </header>
@@ -77,6 +79,10 @@ if ($id > 0) {
         </div>
     </div>
 </div>
+
+   <footer class="footer">
+        <p>© 2026 WorkSpace Connect — 📍 Paris | 📞 01 23 45 67 89 | ✉️ contact@workspaceconnect.fr</p>
+    </footer>
 
 </body>
 </html>
