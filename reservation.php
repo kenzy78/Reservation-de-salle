@@ -18,6 +18,19 @@ if ($_SERVER["REQUEST_METHOD"] === "POST" && !empty($_POST['nom'])) {
     $id_salle     = intval($_POST["id_salle"] ?? 0);
     $modalite     = trim($_POST["modalite"] ?? "");
 
+    // Vérifier que nom et prénom contiennent uniquement des lettres
+if (!preg_match('/^[a-zA-ZÀ-ÿ\s\-]+$/', $nom)) {
+    $errors[] = "Le nom ne doit contenir que des lettres.";
+}
+if (!preg_match('/^[a-zA-ZÀ-ÿ\s\-]+$/', $prenom)) {
+    $errors[] = "Le prénom ne doit contenir que des lettres.";
+}
+
+// Vérifier que le téléphone contient uniquement des chiffres
+if (!preg_match('/^[0-9\s\+\-]{8,15}$/', $telephone)) {
+    $errors[] = "Le téléphone ne doit contenir que des chiffres.";
+}
+
     if (empty($nom))          $errors[] = "Le nom est requis.";
     if (empty($prenom))       $errors[] = "Le prénom est requis.";
     if (empty($email) || !filter_var($email, FILTER_VALIDATE_EMAIL))
@@ -27,7 +40,15 @@ if ($_SERVER["REQUEST_METHOD"] === "POST" && !empty($_POST['nom'])) {
     if (empty($creneau))      $errors[] = "Le créneau est requis.";
     if ($nb_personnes < 1)    $errors[] = "Le nombre de personnes est requis.";
     if ($id_salle < 1)        $errors[] = "Veuillez choisir une salle.";
-
+    if ($id_salle > 0 && $nb_personnes > 0) {
+    $stmtCap = $pdo->prepare('SELECT capacité FROM salle WHERE id_salle = ?');
+    $stmtCap->execute([$id_salle]);
+    $salleChoisie = $stmtCap->fetch(PDO::FETCH_ASSOC);
+    
+    if ($salleChoisie && $nb_personnes > $salleChoisie['capacité']) {
+        $errors[] = "La salle choisie a une capacité maximale de " . $salleChoisie['capacité'] . " personnes. Vous avez indiqué " . $nb_personnes . " participants.";
+    }
+}
     if (empty($errors)) {
         try {
             $stmt = $pdo->prepare("
@@ -97,7 +118,6 @@ $id_preselect = isset($_GET['id']) ? intval($_GET['id']) : 0;
     <div class="resa-card">
         <form method="POST" action="reservation.php">
 
-            <!-- Identité -->
             <div class="resa-section">
                 <p class="resa-section-label">Identité</p>
                 <div class="resa-grid-2">
@@ -124,7 +144,6 @@ $id_preselect = isset($_GET['id']) ? intval($_GET['id']) : 0;
                 </div>
             </div>
 
-            <!-- Date & créneau -->
             <div class="resa-section">
                 <p class="resa-section-label">Date & horaires</p>
                 <div class="resa-grid-2">
@@ -151,7 +170,6 @@ $id_preselect = isset($_GET['id']) ? intval($_GET['id']) : 0;
                 </div>
             </div>
 
-            <!-- Salle -->
             <div class="resa-section">
                 <p class="resa-section-label">Choisir une salle</p>
                 <div class="salle-chips">
@@ -178,7 +196,6 @@ $id_preselect = isset($_GET['id']) ? intval($_GET['id']) : 0;
                 </div>
             </div>
 
-            <!-- Précisions -->
             <div class="resa-section">
                 <p class="resa-section-label">Précisions</p>
                 <div class="resa-field">
