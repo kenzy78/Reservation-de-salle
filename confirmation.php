@@ -6,7 +6,7 @@ $reservation = null;
 
 if ($id > 0) {
 $stmt = $pdo->prepare("
-    SELECT r.*, s.nom AS nom_salle, s.peix
+    SELECT r.*, s.nom AS nom_salle, s.prix
     FROM `réservation` r
     JOIN `salle` s ON r.id_salle = s.id_salle
     WHERE r.`id_réservation` = ?
