@@ -51,6 +51,33 @@ if (!preg_match('/^[0-9\s\+\-]{8,15}$/', $telephone)) {
 }
     if (empty($errors)) {
         try {
+            if (empty($errors)) {
+
+    // 🔍 Vérifier si la salle est déjà réservée ce jour-là sur ce créneau
+    $stmtCheck = $pdo->prepare("
+        SELECT COUNT(*) FROM réservation
+        WHERE id_salle = :id_salle
+          AND date = :date
+          AND créneau = :creneau
+    ");
+    $stmtCheck->execute([
+        ':id_salle' => $id_salle,
+        ':date'     => $date,
+        ':creneau'  => $creneau,
+    ]);
+
+    if ($stmtCheck->fetchColumn() > 0) {
+        $errors[] = "❌ Cette salle est déjà réservée le $date sur le créneau $creneau. Veuillez choisir un autre créneau ou une autre salle.";
+    }
+
+    // Suite normale (INSERT) seulement si toujours pas d'erreur
+    if (empty($errors)) {
+        try {
+            $stmt = $pdo->prepare("
+                INSERT INTO réservation (nom, prénom, email, date, créneau, Nb_personnes, id_salle, téléphone, modalité)
+                VALUES (:nom, :prenom, :email, :date, :creneau, :nb_personnes, :id_salle, :telephone, :modalite)
+            ");
+
             $stmt = $pdo->prepare("
                 INSERT INTO réservation (nom, prénom, email, date, créneau, Nb_personnes, id_salle, téléphone, modalité)
                 VALUES (:nom, :prenom, :email, :date, :creneau, :nb_personnes, :id_salle, :telephone, :modalite)
