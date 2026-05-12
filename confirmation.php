@@ -7,9 +7,9 @@ $reservation = null;
 if ($id > 0) {
 $stmt = $pdo->prepare("
     SELECT r.*, s.nom AS nom_salle,
-    FROM réservation r
-    JOIN salle s ON r.id_salle = s.id_salle
-    WHERE r.id_réservation = ?
+    FROM `réservation` r
+    JOIN `salle` s ON r.id_salle = s.id_salle
+    WHERE r.`id_réservation` = ?
 ");
     $stmt->execute([$id]);
     $reservation = $stmt->fetch(PDO::FETCH_ASSOC);
