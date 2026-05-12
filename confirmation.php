@@ -6,7 +6,7 @@ $reservation = null;
 
 if ($id > 0) {
 $stmt = $pdo->prepare("
-    SELECT r.*, s.nom AS nom_salle
+    SELECT r.*, s.nom AS nom_salle,
     FROM réservation r
     JOIN salle s ON r.id_salle = s.id_salle
     WHERE r.id_réservation = ?
@@ -67,10 +67,6 @@ $stmt = $pdo->prepare("
             <div class="confirm-recap-row">
                 <span>📧</span>
                 <div><label>Email</label><strong><?= htmlspecialchars($reservation['email']) ?></strong></div>
-            </div>
-             <div class="confirm-recap-row">
-                <span>📧</span>
-                <div><label>prix</label><strong><?= htmlspecialchars($reservation['prix']) ?></strong></div>
             </div>
         </div>
         <?php else : ?>
