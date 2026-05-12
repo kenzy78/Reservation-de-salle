@@ -18,90 +18,71 @@ if ($_SERVER["REQUEST_METHOD"] === "POST" && !empty($_POST['nom'])) {
     $id_salle     = intval($_POST["id_salle"] ?? 0);
     $modalite     = trim($_POST["modalite"] ?? "");
 
-    // Vérifier que nom et prénom contiennent uniquement des lettres
-if (!preg_match('/^[a-zA-ZÀ-ÿ\s\-]+$/', $nom)) {
-    $errors[] = "Le nom ne doit contenir que des lettres.";
-}
-if (!preg_match('/^[a-zA-ZÀ-ÿ\s\-]+$/', $prenom)) {
-    $errors[] = "Le prénom ne doit contenir que des lettres.";
-}
+    if (!preg_match('/^[a-zA-ZÀ-ÿ\s\-]+$/', $nom))    $errors[] = "Le nom ne doit contenir que des lettres.";
+    if (!preg_match('/^[a-zA-ZÀ-ÿ\s\-]+$/', $prenom)) $errors[] = "Le prénom ne doit contenir que des lettres.";
+    if (!preg_match('/^[0-9\s\+\-]{8,15}$/', $telephone)) $errors[] = "Le téléphone ne doit contenir que des chiffres.";
 
-// Vérifier que le téléphone contient uniquement des chiffres
-if (!preg_match('/^[0-9\s\+\-]{8,15}$/', $telephone)) {
-    $errors[] = "Le téléphone ne doit contenir que des chiffres.";
-}
+    if (empty($nom))       $errors[] = "Le nom est requis.";
+    if (empty($prenom))    $errors[] = "Le prénom est requis.";
+    if (empty($email) || !filter_var($email, FILTER_VALIDATE_EMAIL)) $errors[] = "L'email est invalide.";
+    if (empty($telephone)) $errors[] = "Le téléphone est requis.";
+    if (empty($date))      $errors[] = "La date est requise.";
+    if (empty($creneau))   $errors[] = "Le créneau est requis.";
+    if ($nb_personnes < 1) $errors[] = "Le nombre de personnes est requis.";
+    if ($id_salle < 1)     $errors[] = "Veuillez choisir une salle.";
 
-    if (empty($nom))          $errors[] = "Le nom est requis.";
-    if (empty($prenom))       $errors[] = "Le prénom est requis.";
-    if (empty($email) || !filter_var($email, FILTER_VALIDATE_EMAIL))
-                              $errors[] = "L'email est invalide.";
-    if (empty($telephone))    $errors[] = "Le téléphone est requis.";
-    if (empty($date))         $errors[] = "La date est requise.";
-    if (empty($creneau))      $errors[] = "Le créneau est requis.";
-    if ($nb_personnes < 1)    $errors[] = "Le nombre de personnes est requis.";
-    if ($id_salle < 1)        $errors[] = "Veuillez choisir une salle.";
     if ($id_salle > 0 && $nb_personnes > 0) {
-    $stmtCap = $pdo->prepare('SELECT capacité FROM salle WHERE id_salle = ?');
-    $stmtCap->execute([$id_salle]);
-    $salleChoisie = $stmtCap->fetch(PDO::FETCH_ASSOC);
-    
-    if ($salleChoisie && $nb_personnes > $salleChoisie['capacité']) {
-        $errors[] = "La salle choisie a une capacité maximale de " . $salleChoisie['capacité'] . " personnes. Vous avez indiqué " . $nb_personnes . " participants.";
-    }
-}
-    if (empty($errors)) {
-        try {
-            if (empty($errors)) {
-
-    // 🔍 Vérifier si la salle est déjà réservée ce jour-là sur ce créneau
-    $stmtCheck = $pdo->prepare("
-        SELECT COUNT(*) FROM réservation
-        WHERE id_salle = :id_salle
-          AND date = :date
-          AND créneau = :creneau
-    ");
-    $stmtCheck->execute([
-        ':id_salle' => $id_salle,
-        ':date'     => $date,
-        ':creneau'  => $creneau,
-    ]);
-
-    if ($stmtCheck->fetchColumn() > 0) {
-        $errors[] = "❌ Cette salle est déjà réservée le $date sur le créneau $creneau. Veuillez choisir un autre créneau ou une autre salle.";
+        $stmtCap = $pdo->prepare('SELECT capacité FROM salle WHERE id_salle = ?');
+        $stmtCap->execute([$id_salle]);
+        $salleChoisie = $stmtCap->fetch(PDO::FETCH_ASSOC);
+        if ($salleChoisie && $nb_personnes > $salleChoisie['capacité']) {
+            $errors[] = "La salle choisie a une capacité maximale de " . $salleChoisie['capacité'] . " personnes.";
+        }
     }
 
-    // Suite normale (INSERT) seulement si toujours pas d'erreur
     if (empty($errors)) {
-        try {
-            $stmt = $pdo->prepare("
-                INSERT INTO réservation (nom, prénom, email, date, créneau, Nb_personnes, id_salle, téléphone, modalité)
-                VALUES (:nom, :prenom, :email, :date, :creneau, :nb_personnes, :id_salle, :telephone, :modalite)
-            ");
 
-            $stmt = $pdo->prepare("
-                INSERT INTO réservation (nom, prénom, email, date, créneau, Nb_personnes, id_salle, téléphone, modalité)
-                VALUES (:nom, :prenom, :email, :date, :creneau, :nb_personnes, :id_salle, :telephone, :modalite)
-            ");
-            $stmt->execute([
-                ":nom"          => $nom,
-                ":prenom"       => $prenom,
-                ":email"        => $email,
-                ":date"         => $date,
-                ":creneau"      => $creneau,
-                ":nb_personnes" => $nb_personnes,
-                ":id_salle"     => $id_salle,
-                ":telephone"    => $telephone,
-                ":modalite"     => $modalite,
-            ]);
-            $id_reservation = $pdo->lastInsertId();
-            header("Location: confirmation.php?id=" . $id_reservation);
-            exit();
-        } catch (PDOException $e) {
-            $errors[] = "Erreur base de données : " . $e->getMessage();
+        // ✅ Vérification : salle déjà réservée ce jour sur ce créneau ?
+        $stmtCheck = $pdo->prepare("
+            SELECT COUNT(*) FROM réservation
+            WHERE id_salle = :id_salle
+              AND date = :date
+              AND créneau = :creneau
+        ");
+        $stmtCheck->execute([
+            ':id_salle' => $id_salle,
+            ':date'     => $date,
+            ':creneau'  => $creneau,
+        ]);
+
+        if ($stmtCheck->fetchColumn() > 0) {
+            $errors[] = "❌ Cette salle est déjà réservée le $date sur le créneau \"$creneau\". Choisissez un autre créneau ou une autre salle.";
+        } else {
+            try {
+                $stmt = $pdo->prepare("
+                    INSERT INTO réservation (nom, prénom, email, date, créneau, Nb_personnes, id_salle, téléphone, modalité)
+                    VALUES (:nom, :prenom, :email, :date, :creneau, :nb_personnes, :id_salle, :telephone, :modalite)
+                ");
+                $stmt->execute([
+                    ":nom"          => $nom,
+                    ":prenom"       => $prenom,
+                    ":email"        => $email,
+                    ":date"         => $date,
+                    ":creneau"      => $creneau,
+                    ":nb_personnes" => $nb_personnes,
+                    ":id_salle"     => $id_salle,
+                    ":telephone"    => $telephone,
+                    ":modalite"     => $modalite,
+                ]);
+                $id_reservation = $pdo->lastInsertId();
+                header("Location: confirmation.php?id=" . $id_reservation);
+                exit();
+            } catch (PDOException $e) {
+                $errors[] = "Erreur base de données : " . $e->getMessage();
+            }
         }
     }
 }
-
 $id_preselect = isset($_GET['id']) ? intval($_GET['id']) : 0;
 ?>
 <!DOCTYPE html>
