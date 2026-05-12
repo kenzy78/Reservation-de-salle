@@ -68,6 +68,10 @@ $stmt = $pdo->prepare("
                 <span>📧</span>
                 <div><label>Email</label><strong><?= htmlspecialchars($reservation['email']) ?></strong></div>
             </div>
+             <div class="confirm-recap-row">
+                <span>📧</span>
+                <div><label>prix</label><strong><?= htmlspecialchars($reservation['prix']) ?></strong></div>
+            </div>
         </div>
         <?php else : ?>
         <p>Votre réservation a bien été enregistrée.</p>
